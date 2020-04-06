@@ -1,0 +1,176 @@
+buildscript {
+    repositories {
+		jcenter()
+		maven {
+			name = "Fabric"
+			url = "https://maven.fabricmc.net/"
+		}
+		maven {
+			name = "Gradle Pluginland"
+			url = "https://plugins.gradle.org/m2/"
+		}
+		maven { 
+			name = "Jitpack"
+			url = "https://jitpack.io/"
+		}
+	}
+	dependencies {
+        classpath "com.github.Chocohead:fabric-loom:415c6b"
+		classpath "gradle.plugin.de.set.gradle:gradle-eclipse-compiler-plugin:1.3.0"
+	}
+}
+apply plugin: "fabric-loom"
+apply plugin: "de.set.ecj"
+
+
+import net.fabricmc.loom.task.RemappingJar;
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+tasks.withType(JavaCompile) {
+	options.encoding = "UTF-8"
+}
+
+archivesBaseName = "Salts Mill"
+version = "0.1"
+
+minecraft {
+	refmapName = "mixins.ctr.refmap.json"
+}
+
+repositories {
+	mavenCentral()
+	maven {
+		name = "HalfOf2"
+		url = "https://raw.githubusercontent.com/Devan-Kerman/Devan-Repo/master/"
+	}
+	maven { 
+		name = "Jitpack"
+		url "https://jitpack.io/"
+	}
+}
+
+configurations {
+	cassetteCompile
+}
+
+dependencies {
+	cassetteCompile "org.apache.commons:commons-lang3:3.5"
+	cassetteCompile "commons-io:commons-io:2.5" //Match the versions Minecraft uses
+
+	minecraft "com.mojang:minecraft:1.15.2"
+	mappings "net.fabricmc:yarn:1.15.2+build.14:v2"
+	modImplementation "net.fabricmc:fabric-loader:0.7.8+build.189"
+
+	modImplementation "net.fabricmc.fabric-api:fabric-api:0.5.1+build.294-1.15"
+	include modImplementation ("com.github.Chocohead:Fabric-ASM:947581")
+	include modImplementation (group: "net.devtech", name: "rrp", version: "2.0.2")
+}
+
+sourceSets {
+	cassette {
+		compileClasspath = configurations.cassetteCompile
+		java {
+			srcDir "cassette"
+		}
+	}
+	main {
+		compileClasspath += cassette.output
+		java {
+			srcDir "src"
+		}
+		resources {
+			srcDir "resources"
+		}
+	}
+	example {
+		compileClasspath += main.compileClasspath + main.output
+		annotationProcessorPath = main.annotationProcessorPath
+		java {
+			srcDir "example/src"
+		}
+		resources {
+			srcDir "example/resources"
+		}
+	}
+}
+
+compileCassetteJava {
+    options.compilerArgs << "-proc:none" //We don't need any APs
+}
+
+task cassetteJar(type: Jar, dependsOn: cassetteClasses) {
+	classifier = "cassette"
+	from sourceSets.cassette.output
+	manifest {
+		attributes "Main-Class": "com.chocohead.cassette.Main"
+	}
+}
+
+task cassetteFatJar(type: Jar) {
+	//baseName = "Jar-to-Cassette"
+	classifier = "cassette-fat"
+	from {
+		configurations.cassetteCompile.collect {it.isDirectory() ? it : zipTree(it)}
+	}
+	with cassetteJar
+	manifest {
+		attributes "Main-Class": "com.chocohead.cassette.Main"
+	}
+}
+
+jar {
+	from sourceSets.cassette.output
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+	classifier = "sources"
+	from sourceSets.main.allSource
+}
+
+task exampleJar(type: RemappingJar, dependsOn: exampleClasses) {
+	classifier = "example"
+	from sourceSets.example.output
+	nestJar = false //We don't want the main project's dependencies in
+}
+
+task exampleCassette(type: JavaExec, dependsOn: [cassetteJar, exampleJar]) {
+	//Setup the task input and outputs so it only runs when exampleJar changes
+	def input = exampleJar.outputs.files.filter {file -> file.name.endsWith("-${exampleJar.classifier}.jar")}.singleFile
+	inputs.file(input)
+	def output = new File(input.parent, input.name.substring(0, input.name.length() - 4) + ".wav")
+	outputs.file(output)
+
+	def contents = new File(temporaryDir, "contents")
+	doFirst {
+		delete contents //Clear anything left behind from a previous compile
+		copy {
+			from zipTree(input)
+			into contents
+		}
+	}
+
+	classpath = cassetteJar.outputs.files + configurations.cassetteCompile
+	main = "com.chocohead.cassette.Main"
+	args "write", "-t", output.absolutePath, "-d", contents
+}
+
+build.dependsOn cassetteFatJar, exampleCassette
+
+artifacts {
+	archives(remapJar) {
+		builtBy remapJar
+	}
+	archives(cassetteJar) {
+		builtBy cassetteJar
+	}
+	archives(cassetteFatJar) {
+		builtBy cassetteFatJar
+	}
+	archives(sourcesJar) {
+		builtBy sourcesJar
+	}
+	archives(exampleCassette.outputs.files.singleFile) {
+		builtBy exampleCassette
+	}
+}

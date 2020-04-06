@@ -1,0 +1,14 @@
+# Code
+/*
+!README.md
+!LICENSE.md
+!.gitignore
+!build.gradle
+!src/
+!src/**
+!resources/
+!resources/**
+!cassette/
+!cassette/**
+!example/
+!example/**

@@ -1,0 +1,16 @@
+{
+	"required": true,
+	"package": "com.chocohead.ctr.mixins.",
+	"compatibilityLevel": "JAVA_8",
+	"mixins": [
+		"ItemGroupMixin"
+	],
+	"client": [
+		"CreativeInventoryScreenMixin",
+		"ItemGroupMixin$NotSoSpecialNowMixin"
+	],
+	
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

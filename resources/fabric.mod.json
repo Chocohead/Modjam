@@ -1,0 +1,41 @@
+{
+	"schemaVersion": 1,
+	"id": "sm",
+	"name": "Salts Mills",
+	"description": "An aspirational dream for better times with questionable noises",
+	"version": "0.1",
+	"icon": "assets/sm/icon.png",
+	"authors": [
+		"Chocohead"
+	],
+	"contact": {
+		"homepage": "https://github.com/Chocohead/Modjam",
+		"sources": "https://github.com/Chocohead/Modjam",
+		"issues": "https://github.com/Chocohead/Modjam/issues"
+	},
+	"license": "MPL-2.0",
+	"environment": "*",
+	"entrypoints": {
+		"mm:early_risers": [
+			"com.chocohead.sm.loader.PreLoader"
+		],
+		"preLaunch": [
+			"com.chocohead.sm.loader.ModLoader"
+		],
+		"rrp_pre": [
+			"com.chocohead.sm.loader.ModLoader"
+		],
+		"client": [
+			"com.chocohead.sm.impl.listeners.MainEntrypoint"
+		],
+		"server": [
+			"com.chocohead.sm.impl.listeners.MainEntrypoint"
+		]
+	},
+	"depends": {
+		"mm": ">=2.0"
+	},
+	"mixins": [{
+		"config": "mixins.sm.json"
+	}]
+}

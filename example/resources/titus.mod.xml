@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<mod id = "ctr" version = "1.0">
+	<name>Creative Tab Randomiser</name>
+	<listeners>
+		<type class = "com.chocohead.sm.api.listeners.GameStartupListener$GameStartupAsyncListener">
+			<listener>com.chocohead.ctr.Fun</listener>
+		</type>
+	</listeners>
+	<mixins>
+		<config file = "mixins.ctr.json"/>
+	</mixins>
+</mod>
