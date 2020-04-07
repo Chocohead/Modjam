@@ -27,6 +27,7 @@ import com.chocohead.mm.api.ClassTinkerers;
 class CassetteLoader {
 	@PreMixinClassloaded
 	private static class CassetteSlot extends URLStreamHandler {
+		private static final boolean DEBUG = Boolean.getBoolean("chocohead.sm.slot.debug");
 		private final Map<String, byte[]> tracks;
 
 		public static URL engauge(String host, Map<String, byte[]> holes) {
@@ -38,14 +39,14 @@ class CassetteLoader {
 		}
 
 		public CassetteSlot(Map<String, byte[]> tracks) {
-			//for (String name : tracks.keySet()) PreLoader.LOGGER.info("Know of " + name);
+			if (DEBUG) for (String name : tracks.keySet()) PreLoader.LOGGER.info("Know of " + name);
 			this.tracks = tracks;
 		}
 
 		@Override
 		protected URLConnection openConnection(URL url) throws IOException {
 			byte[] track = tracks.get(url.getPath());
-			//PreLoader.LOGGER.info((track != null ? "Succeeded" : "Tried") + " to load from " + url.getPath() + " (part of " + url + ')');
+			if (DEBUG) PreLoader.LOGGER.info((track != null ? "Succeeded" : "Tried") + " to load from " + url.getPath() + " (part of " + url + ')');
 			return track != null ? new URLConnection(url) {
 				@Override
 				public Permission getPermission() throws IOException {
