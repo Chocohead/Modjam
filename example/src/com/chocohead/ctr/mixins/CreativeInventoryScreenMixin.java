@@ -17,7 +17,7 @@ import net.fabricmc.fabric.mixin.item.group.client.MixinCreativePlayerInventoryG
 import com.chocohead.ctr.Fun;
 
 @Mixin(CreativeInventoryScreen.class)
-public abstract class CreativeInventoryScreenMixin {
+abstract class CreativeInventoryScreenMixin {
 	@Shadow
 	private static int selectedTab;
 
@@ -37,6 +37,6 @@ public abstract class CreativeInventoryScreenMixin {
 		}
 
 		selectedTab = ItemGroup.BUILDING_BLOCKS.getIndex();
-		fabric_currentPage = selectedTab / 12;
+		fabric_currentPage = selectedTab < 12 ? 0 : 1 + (selectedTab - 12) / 10;
 	}
 }
