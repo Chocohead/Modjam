@@ -1,13 +1,8 @@
 package com.chocohead.sm.loader;
 
 import java.io.File;
-import java.util.AbstractMap.SimpleImmutableEntry;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.IdentityHashMap;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadFactory;
@@ -23,9 +18,9 @@ import com.google.common.util.concurrent.MoreExecutors;
 
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
 
-import com.chocohead.sm.api.SaltsModMetadata;
-
 import net.devtech.rrp.entrypoint.RRPPreGenEntrypoint;
+
+import com.chocohead.sm.api.SaltsModMetadata;
 
 public class ModLoader implements PreLaunchEntrypoint, RRPPreGenEntrypoint {
 	private enum TitusThreadFactory implements ThreadFactory {
@@ -47,7 +42,6 @@ public class ModLoader implements PreLaunchEntrypoint, RRPPreGenEntrypoint {
 	public static final Logger LOGGER = LogManager.getLogger();
 	public static final ListeningExecutorService THREAD_POOL = MoreExecutors.listeningDecorator(new ThreadPoolExecutor(0, Math.max(Runtime.getRuntime().availableProcessors() * 2, 4),
 																								30L, TimeUnit.SECONDS, new SynchronousQueue<Runnable>(), TitusThreadFactory.INSTANCE));
-	private static final List<ModMetadata> MODS = new ArrayList<>();
 
 	@Override
 	public void register() {
@@ -63,26 +57,10 @@ public class ModLoader implements PreLaunchEntrypoint, RRPPreGenEntrypoint {
 	@Override
 	public void onPreLaunch() {
 		PreLoader.resourceLoader.clearClassLoading();
-
-		Map<ProtoModMetadata, ModMetadata> protoToFull = new IdentityHashMap<>();
-		for (ProtoModMetadata mod : PreLoader.protoMods) {
-			ModMetadata full = mod.convert();
-
-			MODS.add(full);
-			protoToFull.put(mod, full);
-		}
-
-		for (ListIterator<Entry<SaltsModMetadata, File>> it = PreLoader.EXTRA_RESOURCE_PACKS.listIterator(); it.hasNext();) {
-			Entry<SaltsModMetadata, File> entry = it.next();
-
-			it.set(new SimpleImmutableEntry<>(protoToFull.get(entry.getKey()), entry.getValue()));
-		}
-
-		PreLoader.protoMods = null;
 	}
 
 	public static List<ModMetadata> getMods() {
-		return Collections.unmodifiableList(MODS);
+		return Collections.unmodifiableList(PreLoader.MODS);
 	}
 
 	public static List<Entry<SaltsModMetadata, File>> getExtraResourcePacks() {

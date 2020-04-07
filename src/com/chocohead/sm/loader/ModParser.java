@@ -37,12 +37,12 @@ import net.fabricmc.loader.api.SemanticVersion;
 import net.fabricmc.loader.util.version.VersionParsingException;
 
 import com.chocohead.sm.impl.SortedModDependency.Ordered;
-import com.chocohead.sm.loader.CommonModBuilder.ContactBuilder;
-import com.chocohead.sm.loader.CommonModBuilder.PersonBuilder;
+import com.chocohead.sm.loader.ModBuilder.ContactBuilder;
+import com.chocohead.sm.loader.ModBuilder.PersonBuilder;
 
 @PreMixinClassloaded
 public class ModParser {
-	public static Set<ProtoModMetadata> read(InputStream xml, EnvType side) throws IOException {
+	public static Set<ModMetadata> read(InputStream xml, EnvType side) throws IOException {
 		Set<ModNode> readMods;
 		try {
 			readMods = create(xml);
@@ -50,9 +50,9 @@ public class ModParser {
 			throw new IllegalArgumentException("Invalid mod XML", e);
 		}
 
-		Set<ProtoModMetadata> mods = new HashSet<>();
+		Set<ModMetadata> mods = new HashSet<>();
 		for (ModNode mod : readMods) {
-			ProtoModBuilder builder = new ProtoModBuilder(mod.id, mod.version);
+			ModBuilder builder = new ModBuilder(mod.id, mod.version);
 
 			for (Node child : mod.children) {
 				switch (child.getType()) {
