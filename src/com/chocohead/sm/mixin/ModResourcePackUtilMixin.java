@@ -20,9 +20,9 @@ import com.chocohead.sm.api.SaltsModMetadata;
 import com.chocohead.sm.loader.DevModResourcePack;
 import com.chocohead.sm.loader.ModLoader;
 
-@Pseudo
+@Pseudo //Only depend on fabric-resource-loader-v0 in dev for the sake of loading the resources
 @Mixin(value = ModResourcePackUtil.class, remap = false)
-public class ModResourcePackUtilMixin {//Little naughty, but should only be relevant for dev anyway
+public class ModResourcePackUtilMixin {
 	@Inject(method = "appendModResourcePacks", at = @At("HEAD"))
 	private static void appendExtraPacks(List<ResourcePack> packList, ResourceType type, CallbackInfo callback) {
 		for (Entry<SaltsModMetadata, File> entry : ModLoader.getExtraResourcePacks()) {
