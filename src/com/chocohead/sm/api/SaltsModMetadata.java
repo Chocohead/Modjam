@@ -30,6 +30,11 @@ public interface SaltsModMetadata extends ModMetadata {
 		return TYPE;
 	}
 
+	/** @since 0.4 */
+	default String getFriendlyName() {
+		return Optional.ofNullable(getName()).orElseGet(this::getId);
+	}
+
 	@Override
 	SemanticVersion getVersion();
 
