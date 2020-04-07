@@ -32,7 +32,7 @@ public abstract class CreativeInventoryScreenMixin {
 		ItemGroup[] tabs = Fun.shuffle(ItemGroup.GROUPS);
 
 		for (int i = 0; i < tabs.length; i++) {
-			((ItemGroupMixin) tabs[i]).setIndex(i);
+			((ItemGroupAccess) tabs[i]).setIndex(i);
 			ItemGroup.GROUPS[i] = tabs[i];
 		}
 

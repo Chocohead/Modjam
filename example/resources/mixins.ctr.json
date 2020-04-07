@@ -3,10 +3,11 @@
 	"package": "com.chocohead.ctr.mixins.",
 	"compatibilityLevel": "JAVA_8",
 	"mixins": [
-		"ItemGroupMixin"
+		"ItemGroupAccess"
 	],
 	"client": [
 		"CreativeInventoryScreenMixin",
+		"ItemGroupMixin",
 		"ItemGroupMixin$NotSoSpecialNowMixin"
 	],
 	
