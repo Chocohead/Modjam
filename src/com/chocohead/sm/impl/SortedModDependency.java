@@ -11,8 +11,8 @@ public class SortedModDependency extends SimpleModDependency {
 
 	private final Ordered ordering;
 
-	public SortedModDependency(String modID, Ordered ordering) {
-		super(modID);
+	public SortedModDependency(String modID, String type, Ordered ordering) {
+		super(modID, type);
 
 		this.ordering = ordering;
 	}

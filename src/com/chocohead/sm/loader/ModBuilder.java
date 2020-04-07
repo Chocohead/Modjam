@@ -205,33 +205,33 @@ class ModBuilder {
 		return this;
 	}
 
-	public ModBuilder withDependency(String modID) {
-		depends.add(new SimpleModDependency(modID));
+	public ModBuilder withDependency(String modID, String type) {
+		depends.add(new SimpleModDependency(modID, type));
 		return this;
 	}
 
-	public ModBuilder withOrderedDependency(String modID, Ordered ordering) {
-		depends.add(new SortedModDependency(modID, ordering));
+	public ModBuilder withOrderedDependency(String modID, String type, Ordered ordering) {
+		depends.add(new SortedModDependency(modID, type, ordering));
 		return this;
 	}
 
-	public ModBuilder withSuggestion(String modID, boolean strongSuggestion) {
-		(strongSuggestion ? recommends : suggests).add(new SimpleModDependency(modID));
+	public ModBuilder withSuggestion(String modID, String type, boolean strongSuggestion) {
+		(strongSuggestion ? recommends : suggests).add(new SimpleModDependency(modID, type));
 		return this;
 	}
 
-	public ModBuilder withOrderedSuggestion(String modID, Ordered ordering, boolean strongSuggestion) {
-		(strongSuggestion ? recommends : suggests).add(new SortedModDependency(modID, ordering));
+	public ModBuilder withOrderedSuggestion(String modID, String type, Ordered ordering, boolean strongSuggestion) {
+		(strongSuggestion ? recommends : suggests).add(new SortedModDependency(modID, type, ordering));
 		return this;
 	}
 
-	public ModBuilder withConflict(String modID, boolean severeConflict) {
-		(severeConflict ? breaks : conflicts).add(new SimpleModDependency(modID));
+	public ModBuilder withConflict(String modID, String type, boolean severeConflict) {
+		(severeConflict ? breaks : conflicts).add(new SimpleModDependency(modID, type));
 		return this;
 	}
 
-	public ModBuilder withOrderedConflict(String modID, Ordered ordering, boolean severeConflict) {
-		(severeConflict ? breaks : conflicts).add(new SortedModDependency(modID, ordering));
+	public ModBuilder withOrderedConflict(String modID, String type, Ordered ordering, boolean severeConflict) {
+		(severeConflict ? breaks : conflicts).add(new SortedModDependency(modID, type, ordering));
 		return this;
 	}
 

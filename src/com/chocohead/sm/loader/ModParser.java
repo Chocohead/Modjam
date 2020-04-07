@@ -36,6 +36,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.SemanticVersion;
 import net.fabricmc.loader.util.version.VersionParsingException;
 
+import com.chocohead.sm.api.SaltsModMetadata;
 import com.chocohead.sm.impl.SortedModDependency.Ordered;
 import com.chocohead.sm.loader.ModBuilder.ContactBuilder;
 import com.chocohead.sm.loader.ModBuilder.PersonBuilder;
@@ -101,9 +102,9 @@ public class ModParser {
 							DependencyNode node = (DependencyNode) grandChild;
 
 							if (node.order == Sorting.INDIFFERENT) {
-								builder.withDependency(node.id);
+								builder.withDependency(node.id, node.type);
 							} else {
-								builder.withOrderedDependency(node.id, node.order.asOrdering());
+								builder.withOrderedDependency(node.id, node.type, node.order.asOrdering());
 							}
 						} else {
 							assert NodeType.dependencies.validChildren.contains(grandChild.getType());
@@ -118,9 +119,9 @@ public class ModParser {
 							SuggestionNode node = (SuggestionNode) grandChild;
 
 							if (node.order == Sorting.INDIFFERENT) {
-								builder.withSuggestion(node.id, node.strong);
+								builder.withSuggestion(node.id, node.type, node.strong);
 							} else {
-								builder.withOrderedSuggestion(node.id, node.order.asOrdering(), node.strong);
+								builder.withOrderedSuggestion(node.id, node.type, node.order.asOrdering(), node.strong);
 							}
 						} else {
 							assert NodeType.suggestions.validChildren.contains(grandChild.getType());
@@ -135,9 +136,9 @@ public class ModParser {
 							ConflictNode node = (ConflictNode) grandChild;
 
 							if (node.order == Sorting.INDIFFERENT) {
-								builder.withConflict(node.id, node.severe);
+								builder.withConflict(node.id, node.type, node.severe);
 							} else {
-								builder.withOrderedConflict(node.id, node.order.asOrdering(), node.severe);
+								builder.withOrderedConflict(node.id, node.type, node.order.asOrdering(), node.severe);
 							}
 						} else {
 							assert NodeType.conflicts.validChildren.contains(grandChild.getType());
@@ -1089,6 +1090,7 @@ public class ModParser {
 	private static class DependencyNode extends Node {
 		final String id;
 		//final Version version;
+		final String type;
 		final Sorting order;
 
 		DependencyNode(ParentNode node, Attributes attributes) throws SAXException {
@@ -1105,6 +1107,7 @@ public class ModParser {
 			} else {
 				this.version = null;
 			}*/
+			type = getOptionalAttribute(attributes, "type").orElse(SaltsModMetadata.TYPE);
 			order = Sorting.get(getOptionalAttribute(attributes, "loading").orElse(Sorting.INDIFFERENT.name()));
 		}
 

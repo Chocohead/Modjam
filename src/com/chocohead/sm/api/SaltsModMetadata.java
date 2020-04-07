@@ -17,10 +17,17 @@ import com.chocohead.sm.loader.PreMixinClassloaded;
 
 @PreMixinClassloaded
 public interface SaltsModMetadata extends ModMetadata {
+	/**
+	 * The {@link ModMetadata#getType() type} of mod all Salts Mill mods are
+	 *
+	 * @since 0.3
+	 */
+	String TYPE = "Salts Mill";
+
 	//Mod information >>
 	@Override
 	default String getType() {
-		return "Salts Mill";
+		return TYPE;
 	}
 
 	@Override
