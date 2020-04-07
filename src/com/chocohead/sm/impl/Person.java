@@ -8,7 +8,9 @@ import com.google.common.collect.ImmutableMap;
 
 import com.chocohead.sm.api.DescriptivePerson;
 import com.chocohead.sm.api.PersonalContact;
+import com.chocohead.sm.loader.PreMixinClassloaded;
 
+@PreMixinClassloaded
 public final class Person implements DescriptivePerson, PersonalContact {
 	public static DescriptivePerson create(String name, URL homepage, URL email, URI IRC, String twitter, String discord, Map<String, String> others) {
 		assert name != null;

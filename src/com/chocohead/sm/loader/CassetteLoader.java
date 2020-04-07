@@ -23,8 +23,9 @@ import com.chocohead.cassette.Cassette;
 import com.chocohead.cassette.CassetteReader.CassetteFile;
 import com.chocohead.mm.api.ClassTinkerers;
 
-/** This is loaded on the pre-Mixin phase of Knot, <b>BE VERY CAREFUL WHAT IS LOADED</b> */
+@PreMixinClassloaded
 class CassetteLoader {
+	@PreMixinClassloaded
 	private static class CassetteSlot extends URLStreamHandler {
 		private final Map<String, byte[]> tracks;
 

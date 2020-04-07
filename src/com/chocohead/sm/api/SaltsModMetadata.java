@@ -13,6 +13,9 @@ import net.fabricmc.loader.api.metadata.CustomValue;
 import net.fabricmc.loader.api.metadata.ModMetadata;
 import net.fabricmc.loader.api.metadata.Person;
 
+import com.chocohead.sm.loader.PreMixinClassloaded;
+
+@PreMixinClassloaded
 public interface SaltsModMetadata extends ModMetadata {
 	//Mod information >>
 	@Override

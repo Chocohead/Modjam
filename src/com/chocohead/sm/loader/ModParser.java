@@ -40,7 +40,7 @@ import com.chocohead.sm.impl.SortedModDependency.Ordered;
 import com.chocohead.sm.loader.CommonModBuilder.ContactBuilder;
 import com.chocohead.sm.loader.CommonModBuilder.PersonBuilder;
 
-/** This is loaded on the pre-Mixin phase of Knot, <b>BE VERY CAREFUL WHAT IS LOADED</b> */
+@PreMixinClassloaded
 public class ModParser {
 	public static Set<ProtoModMetadata> read(InputStream xml, EnvType side) throws IOException {
 		Set<ModNode> readMods;

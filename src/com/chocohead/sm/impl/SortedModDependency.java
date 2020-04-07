@@ -1,6 +1,10 @@
 package com.chocohead.sm.impl;
 
+import com.chocohead.sm.loader.PreMixinClassloaded;
+
+@PreMixinClassloaded
 public class SortedModDependency extends SimpleModDependency {
+	@PreMixinClassloaded
 	public enum Ordered {
 		BEFORE, AFTER;
 	}

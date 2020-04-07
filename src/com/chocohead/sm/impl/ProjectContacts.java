@@ -7,7 +7,9 @@ import java.util.Map;
 import com.google.common.collect.ImmutableMap;
 
 import com.chocohead.sm.api.ProjectContact;
+import com.chocohead.sm.loader.PreMixinClassloaded;
 
+@PreMixinClassloaded
 public final class ProjectContacts implements ProjectContact {
 	public static ProjectContact create(URL issues, URL source, URL homepage, URI IRC, String discord, Map<String, String> others) {
 		if (issues == null && source == null && homepage == null && IRC == null && discord == null && others.isEmpty()) {

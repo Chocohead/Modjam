@@ -22,7 +22,7 @@ import net.fabricmc.loader.api.FabricLoader;
 
 import com.chocohead.sm.api.SaltsModMetadata;
 
-/** This is loaded on the pre-Mixin phase of Knot, <b>BE VERY CAREFUL WHAT IS LOADED</b> */
+@PreMixinClassloaded
 public class PreLoader implements Runnable {
 	static final List<Entry<SaltsModMetadata, File>> EXTRA_RESOURCE_PACKS = new ArrayList<>();
 	static final Logger LOGGER = LogManager.getLogger();

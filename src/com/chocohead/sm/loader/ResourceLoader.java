@@ -15,7 +15,7 @@ import net.minecraft.util.InvalidIdentifierException;
 
 import net.devtech.rrp.api.RuntimeResourcePack;
 
-/** This is loaded on the pre-Mixin phase of Knot, <b>BE VERY CAREFUL WHAT IS LOADED</b> */
+@PreMixinClassloaded
 final class ResourceLoader extends Thread {
 	private final ReentrantLock lock = new ReentrantLock(true);
 	private final Condition mapFilled = lock.newCondition();
@@ -56,6 +56,7 @@ final class ResourceLoader extends Thread {
 		}
 	}
 
+	/** Signal that the Mixin transformer is now running so it is safe to classload Minecraft types */
 	void clearClassLoading() {
 		assert !lock.isHeldByCurrentThread();
 		lock.lock();
@@ -112,7 +113,7 @@ final class ResourceLoader extends Thread {
 				}
 			}
 
-			load(typeToNamespace); //Perhaps hold up the class loading of ResourceType until late enough?
+			load(typeToNamespace); //Delay the class loading of the Minecraft classes until the Mixin transformer is on
 		} finally {
 			lock.unlock(); //No need for this anymore
 		}

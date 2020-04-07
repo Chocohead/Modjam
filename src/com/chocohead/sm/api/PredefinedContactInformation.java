@@ -8,6 +8,9 @@ import com.google.common.collect.ImmutableMap.Builder;
 
 import net.fabricmc.loader.api.metadata.ContactInformation;
 
+import com.chocohead.sm.loader.PreMixinClassloaded;
+
+@PreMixinClassloaded
 interface PredefinedContactInformation extends ContactInformation {
 	/**
 	 * Get the list of properties {@link #get(String)} supports, but might still return {@link Optional#empty() empty} for

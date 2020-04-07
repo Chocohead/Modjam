@@ -6,6 +6,9 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 
+import com.chocohead.sm.loader.PreMixinClassloaded;
+
+@PreMixinClassloaded
 public interface ProjectContact extends PredefinedContactInformation {
 	ProjectContact EMPTY = new ProjectContact() {
 		@Override
