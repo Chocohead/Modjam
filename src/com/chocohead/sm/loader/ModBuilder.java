@@ -8,8 +8,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+
+import it.unimi.dsi.fastutil.chars.CharArraySet;
+import it.unimi.dsi.fastutil.chars.CharSet;
 
 import net.fabricmc.loader.api.SemanticVersion;
 import net.fabricmc.loader.api.metadata.ModDependency;
@@ -46,6 +51,17 @@ class ModBuilder {
 	private final ImmutableMap.Builder<String, String> custom = ImmutableMap.builder();
 
 	public ModBuilder(String modID, SemanticVersion version) {
+		if (modID == null || StringUtils.isBlank(modID)) throw new IllegalArgumentException("Cannot have mod with no name!");
+		if (version == null) throw new NullPointerException("Cannot have mod with no version!");
+
+		char first = modID.charAt(0);
+		if (first < 'a' || first > 'z') throw new IllegalArgumentException("Mods must start with a lowercase letter a-z");
+
+		CharSet invalidLetters = modID.chars().skip(1).filter(letter -> {//Same restrictions as Identifier#isNamespaceValid
+			return (letter < '0' || letter > '9' && letter < 'a' || letter > 'z') && letter != '-' && letter != '_' && letter != '.';
+		}).collect(CharArraySet::new, (set, letter) -> set.add((char) letter), CharSet::addAll);
+		if (!invalidLetters.isEmpty()) throw new IllegalArgumentException("Invalid characters in mod name: " + invalidLetters);
+
 		id = modID;
 		this.version = version;
 	}
