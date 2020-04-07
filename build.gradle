@@ -32,7 +32,7 @@ tasks.withType(JavaCompile) {
 }
 
 archivesBaseName = "Salts Mill"
-version = "0.1"
+version = "0.2"
 
 minecraft {
 	refmapName = "mixins.ctr.refmap.json"
