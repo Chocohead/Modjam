@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import net.minecraft.item.ItemGroup;
 
 import net.fabricmc.fabric.impl.item.group.FabricCreativeGuiComponents;
+import net.fabricmc.loader.api.FabricLoader;
 
 import com.chocohead.sm.api.listeners.GameStartupListener.GameStartupAsyncListener;
 
@@ -21,12 +22,17 @@ public class Fun implements GameStartupAsyncListener {
 	public void onGameStart(Synchroniser syncer) {
 		Logger logger = LogManager.getLogger();
 
-		logger.info("Preparing fun");
-		try {
-			FabricCreativeGuiComponents.COMMON_GROUPS.remove(ItemGroup.HOTBAR); //Don't need this
-		} catch (Throwable t) {
-			logger.error("Accidents were had during fun", t);
+		if (FabricLoader.getInstance().isModLoaded("fabric-item-groups-v0")) {
+			logger.info("Preparing fun");
+
+			try {
+				FabricCreativeGuiComponents.COMMON_GROUPS.remove(ItemGroup.HOTBAR); //Don't need this
+			} catch (Throwable t) {
+				logger.error("Accidents were had during fun", t);
+			}
 		}
+
+		logger.info("Fun prepared");
 	}
 
 	public static <T> T[] shuffle(T[] array) {
