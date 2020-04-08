@@ -7,8 +7,6 @@ import java.util.Map.Entry;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.apache.commons.lang3.StringUtils;
-
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.InvalidIdentifierException;
@@ -94,7 +92,7 @@ final class ResourceLoader extends Thread {
 
 			for (Entry<String, byte[]> entry : allNameToContents.entrySet()) {
 				String file = entry.getKey();
-				if (StringUtils.countMatches(file, '/') < 2) continue; //Expecting at least [assets/data]/namespace/***
+				if (countMatches(file, '/') < 2) continue; //Expecting at least [assets/data]/namespace/***
 
 				int split = file.indexOf('/');
 				String type = file.substring(0, split++);
@@ -119,6 +117,15 @@ final class ResourceLoader extends Thread {
 		}
 
 		allNameToContents.clear();
+	}
+
+	private static int countMatches(String s, char c) {
+		int result = 0;
+		while (s.indexOf(c) != -1) {
+			result += 1;
+			s = s.substring(result + 1);
+		}
+		return result;
 	}
 
 	private static void load(Map<String, Map<String, Map<String, byte[]>>> typeToNamespace) {
