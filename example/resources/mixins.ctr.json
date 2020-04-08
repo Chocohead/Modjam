@@ -10,7 +10,7 @@
 		"ItemGroupMixin",
 		"ItemGroupMixin$NotSoSpecialNowMixin"
 	],
-	
+	"refmap": "mixins.ctr.refmap.json",
 	"injectors": {
 		"defaultRequire": 1
 	}

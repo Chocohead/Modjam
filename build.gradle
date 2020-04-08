@@ -15,7 +15,7 @@ buildscript {
 		}
 	}
 	dependencies {
-        classpath "com.github.Chocohead:fabric-loom:415c6b"
+        classpath "com.github.Chocohead:fabric-loom:bc21749"
 		classpath "gradle.plugin.de.set.gradle:gradle-eclipse-compiler-plugin:1.3.0"
 	}
 }
@@ -35,7 +35,8 @@ archivesBaseName = "Salts Mill"
 version = "0.4"
 
 minecraft {
-	refmapName = "mixins.ctr.refmap.json"
+	//refmapName = "mixins.ctr.refmap.json"
+	taskToRefmap << [compileJava: "mixins.sm.refmap.json", compileExampleJava: "mixins.ctr.refmap.json"]
 }
 
 repositories {

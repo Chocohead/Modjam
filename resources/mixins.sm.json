@@ -5,7 +5,7 @@
 	"mixins": [
 		"ModResourcePackUtilMixin"
 	],
-	
+	"refmap": "mixins.sm.refmap.json",
 	"injectors": {
 		"defaultRequire": 1
 	}
