@@ -36,7 +36,7 @@ version = "0.4"
 
 minecraft {
 	//refmapName = "mixins.ctr.refmap.json"
-	taskToRefmap << [compileJava: "mixins.sm.refmap.json", compileExampleJava: "mixins.ctr.refmap.json"]
+	taskToRefmap << [compileCassetteJava: "NONE", compileJava: "mixins.sm.refmap.json", compileExampleJava: "mixins.ctr.refmap.json"]
 }
 
 repositories {
