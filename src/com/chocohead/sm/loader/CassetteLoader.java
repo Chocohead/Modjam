@@ -12,10 +12,9 @@ import java.net.URLStreamHandler;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.Permission;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
-
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableMap.Builder;
 
 import net.fabricmc.loader.api.FabricLoader;
 
@@ -92,7 +91,7 @@ class CassetteLoader {
 
 		for (Path wav : wavs) {
 			PreLoader.LOGGER.debug("Loading {}", wav);
-			Builder<String, byte[]> tracks = ImmutableMap.builder();
+			Map<String, byte[]> tracks = new HashMap<>();
 
 			try {
 				Cassette.readCompletely(wav, reader -> {
@@ -110,7 +109,7 @@ class CassetteLoader {
 			}
 
 			PreLoader.LOGGER.debug("Successfully loaded {}, adding to classpath", wav);
-			Map<String, byte[]> cassette = tracks.build();
+			Map<String, byte[]> cassette = Collections.unmodifiableMap(tracks);
 
 			boolean success = ClassTinkerers.addURL(CassetteSlot.engauge(wav.getFileName().toString(), cassette));
 			if (!success) throw new AssertionError("Failed to insert cassette!"); //A most terrible problem
