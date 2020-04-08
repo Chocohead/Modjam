@@ -12,9 +12,11 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Sets;
 
@@ -33,6 +35,8 @@ public class PreLoader implements Runnable {
 
 	@Override
 	public void run() {
+		classLoadingForcer();
+
 		CassetteLoader.loadCassettes(resourceLoader); //First we need to make sure all the cassettes are loaded
 
 		LOGGER.debug("Commencing loading");
@@ -47,6 +51,12 @@ public class PreLoader implements Runnable {
 				Mixins.addConfiguration(mixin); //Add the Mixins the loaded mods may have
 			}
 		}
+	}
+
+	/** Define classes which the main and resource threads will otherwise deadlock each other over on a dedicated server */
+	private static void classLoadingForcer() {
+		StringUtils.countMatches(null, 'X');
+		ImmutableMap.of().entrySet().iterator();
 	}
 
 	private static Set<ModMetadata> loadMods() {

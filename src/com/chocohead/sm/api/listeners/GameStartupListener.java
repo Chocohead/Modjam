@@ -1,8 +1,7 @@
 package com.chocohead.sm.api.listeners;
 
-import net.minecraft.server.dedicated.DedicatedServer;
-
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.api.ModInitializer;
 
 /**
@@ -12,7 +11,7 @@ import net.fabricmc.api.ModInitializer;
  *
  * @author Chocohead
  * @implNote
- * 	Technically {@link ClientModInitializer} and {@link DedicatedServer} are closer equivalents,
+ * 	Technically {@link ClientModInitializer} and {@link DedicatedServerModInitializer} are closer equivalents,
  * 	with both being used if the client <i>and</i> server are listening
  */
 public interface GameStartupListener {
