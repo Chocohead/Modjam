@@ -121,9 +121,10 @@ final class ResourceLoader extends Thread {
 
 	private static int countMatches(String s, char c) {
 		int result = 0;
-		while (s.indexOf(c) != -1) {
+		int index;
+		while ((index = s.indexOf(c)) != -1) {
 			result += 1;
-			s = s.substring(result + 1);
+			s = s.substring(index + 1);
 		}
 		return result;
 	}
